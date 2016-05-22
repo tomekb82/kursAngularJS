@@ -1,6 +1,33 @@
 # kursAngularJS
 
 
+# Instalacja XAMPP
+
+Uruchamianie aplikacji na serwerze aplikacyjnym
+
+cd ~/Downloads
+sudo su
+sudo chmod 777 -R xampp-linux-x64-1.8.3-4-installer.run
+./xampp-linux-x64-1.8.3-4-installer.run
+
+Konfiguracja:
+
+ - hosty:
+$ cat /etc/hosts
+127.0.0.1	kurs-angularjs
+
+ - konfiguracja virtualnych hostów pod jakim adresem bedzie widoczna nasza aplikacja w '/opt/lampp/etc/extra/httpd-vhosts.conf':
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@dummy-host2.example.com
+    DocumentRoot "/home/tomek/Desktop/KURS_ANGULARJS/learning-app"
+    ServerName dummy-host2.example.com
+    ErrorLog "logs/dummy-host2.example.com-error_log"
+    CustomLog "logs/dummy-host2.example.com-access_log" common
+</VirtualHost>
+
+
+
 # Edytor tekstowy: sublime-text 3 z wtyczka do AngularJS
 
 ## Instalacja sublime-text3 na ubuntu
@@ -8,7 +35,12 @@
 sudo add-apt-repository -y ppa:webupd8team/sublime-text-3
 sudo apt-get update; sudo apt-get install -y sublime-text-installer
 
-## Instalacja wtyczki:
+## Emmet do podpowiadania skaldni html
+- np.button.btn.btn-success[ng-click="aaaa"]{Wyczyść tablicę}
+
+wybierz klawisz TAB
+
+## Instalacja wtyczki dla angularjs:
 
     Download and install Sublime Text Editor from http://www.sublimetext.com/.
     Download Angular Sublime package (zip file) developed by the Angular-UI team from this page: https://github.com/angular-ui/AngularJS-sublime-package. This page consists of greater details on further customizing Sublime for AngularJS.
