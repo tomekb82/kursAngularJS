@@ -40,6 +40,27 @@ sudo apt-get update; sudo apt-get install -y sublime-text-installer
 
 wybierz klawisz TAB
 
+Available actions
+
+    Expand Abbreviation – Tab or Ctrl+E
+    Interactive “Expand Abbreviation” — Ctrl+Alt+Enter
+    Match Tag Pair Outward – ⌃D (Mac) / Ctrl+, (PC)
+    Match Tag Pair Inward – ⌃J / Shift+Ctrl+0
+    Go to Matching Pair – ⇧⌃T / Ctrl+Alt+J
+    Wrap With Abbreviation — ⌃W / Shift+Ctrl+G
+    Go to Edit Point — Ctrl+Alt+→ or Ctrl+Alt+←
+    Select Item – ⇧⌘. or ⇧⌘, / Shift+Ctrl+. or Shift+Ctrl+,
+    Toggle Comment — ⇧⌥/ / Shift+Ctrl+/
+    Split/Join Tag — ⇧⌘' / Shift+Ctrl+`
+    Remove Tag – ⌘' / Shift+Ctrl+;
+    Update Image Size — ⇧⌃I / Ctrl+U
+    Evaluate Math Expression — ⇧⌘Y / Shift+Ctrl+Y
+    Reflect CSS Value – ⇧⌘R / Shift+Ctrl+R
+    Encode/Decode Image to data:URL – ⇧⌃D / Ctrl+'
+    Rename Tag – ⇧⌘K / Shift+Ctrl+'
+
+
+
 ## Instalacja wtyczki dla angularjs:
 
     Download and install Sublime Text Editor from http://www.sublimetext.com/.
