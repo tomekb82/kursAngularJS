@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl" ng-app="FirstApp">
+<html lang="pl" ng-app="firstApp">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,16 +22,97 @@
             <div class="navbar-heading">Learning-app</div>
         </nav>
 
-        
-        <div ng-controller="FirstController">
-                {{message}}
+        <div class="container" ng-controller="FirstController">
+            <div class="row">
 
-                <button class="btn btn-success" ng-click="aaaa">Wyczyść tablicę</button>
+                <h2 class="text-center"><strong>Zamówienie dla {{ userName }}</strong></h2>
 
+                <hr>
+
+                <div class="col-xs-6">
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="(id, product) in shoppingCart">
+                            <strong>{{ product.name }}</strong> - {{ product.price | currency }}
+                            <button ng-click="removeFromCart(id)" class="btn btn-xs btn-danger pull-right">X</button>
+                        </li>
+                    </ul>
+
+                    <ul ng-show="shippingPrice() > 0" class="list-group">
+                        <li class="list-group-item">
+                            <strong>Wysyłka - </strong> {{ shippingPrice() | currency }}
+                        </li>
+                    </ul>
+
+                    <button ng-show="shippingPrice() > 0" class="btn btn-success" ng-click="confirmOrder()">Złóż zamówienie</button>
+
+                    <button ng-show="shippingPrice() > 0"class="btn btn-danger pull-right" ng-click="clearCart()">Wyczyść koszyk</button>
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="well">Twój komentarz: {{ comment }}</div>
+                    <textarea class="form-control" ng-model="comment"></textarea>
+                </div>
+
+            </div>
+        </div>
 
         <script src="js/jquery.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/angular.min.js"></script>
+        <script src="js/angular-locale_pl-pl.js"></script>
         <script src="js/main.js"></script>
+         <script>
+            var app = angular.module('firstApp', []);
+
+            app.controller('FirstController', ['$scope', 'userProvider', 'limitToFilter', function($scope, userProvider, limitToFilter){
+
+                $scope.comment = limitToFilter('...dodaj komentarz obcięty...', 14);
+
+                $scope.shoppingCart = [
+                    { name: 'Sekrety Photoshop - Tips & Tricks', price: 99 },
+                    { name: 'ASP.NET MVC - w Praktyce', price: 149 },
+                    { name: 'Sekrety Photoshop - Tips & Tricks', price: 99 },
+                    { name: 'Kreacje 3D w Modo Z Photoshop, Illustrator i ZBrush', price: 129 }
+                ];
+
+                $scope.shippingPrice = function (){
+                    var val = 0;
+                    angular.forEach($scope.shoppingCart, function(value, key){
+                       val +=  value.price;
+                    });
+                    console.log(val);
+                    return val;
+                };
+
+                $scope.userName = userProvider.fullName();
+
+                $scope.confirmOrder = function () {
+                    alert('Dziękujemy! Twoje zamówienie zostało przyjęte!');
+                    console.log('Komentarz: ' + $scope.comment);
+                    console.log('Produktów: ' + $scope.shoppingCart.length);
+                };
+
+                $scope.clearCart = function () {
+                    $scope.shoppingCart = [];
+                };
+
+                $scope.removeFromCart = function (id) {
+                    $scope.shoppingCart.splice(id, 1);
+                    $scope.shippingPrice();
+                };
+
+            }]);
+
+            app.factory('userProvider', function(){
+                return {
+                    firstName: 'Tomek',
+                    lastName: 'Belina',
+                    email: 'tomek@wp.pl',
+                    fullName: function () {
+                        return this.firstName + ' ' + this.lastName;
+                    }
+                };
+            });
+        </script>
     </body>
 </html>
