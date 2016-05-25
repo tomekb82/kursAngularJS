@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pl" ng-app="exampleApp">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Kurs AngularJS</title>
+
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,400&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/styles.css" rel="stylesheet">
+
+        <style>
+            .bc-style{
+                float: left;
+                width: 205px;
+                margin: 10px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <a class="navbar-brand" href="#">
+                <img src="img/angularjs-for-header-only.svg" alt="AngularJS">
+            </a>
+
+            <div class="navbar-heading">Learning-directives</div>
+        </nav>
+
+        <div class="container" ng-controller="ExampleController">
+
+            <div class="row clearfix">
+                <h3>Zespół pierwszy</h3>
+                <div ng-repeat="member in team1">
+                    <business-card member="member"></business-card>
+                </div>
+
+                <div class="pull-right">
+                    <business-card member="teamLeader"></business-card>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row clearfix">
+                <h3>Zespół drugi</h3>
+                <div ng-repeat="member in team2">
+                    <div business-card member="member" type="extended"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+            var app = angular.module('exampleApp', []);
+
+            app.controller('ExampleController', ['$scope', function($scope){
+
+                $scope.team1 = [
+                    { name: 'Adam Nowak', position: 'WebDeveloper', avatar: 'img/comedian.jpg' },
+                    { name: 'Grzegorz Kowalski', position: 'Front-end Developer', avatar: 'img/cool.jpg' },
+                    { name: 'Rafał Nijaki', position: 'Back-end Developer', avatar: 'img/constructive.jpg' },
+                ];
+
+                $scope.teamLeader = { name: 'Marek Pierwszy', position: 'Leader', avatar: 'img/happy.jpg' };
+
+                $scope.team2 = [
+                    { name: 'Michał Kowal', position: 'WebDeveloper', avatar: 'img/folkloric.jpg', email: 'michal@eduweb.pl' },
+                    { name: 'Arek Suchy', position: 'Front-end Developer', avatar: 'img/confused.jpg', email: 'arek@eduweb.pl' },
+                    { name: 'Rafał Nijaki', position: 'Back-end Developer', avatar: 'img/comedian.jpg', email: 'rafal@eduweb.pl' },
+                ];
+
+            }]);
+
+            app.directive('businessCard', function () {
+
+                return {
+                    scope: {
+                        member: '='
+                    },
+                    restrict: 'AEC',
+                    //template: '<div class="well text-center bc-style"><img ng-src="{{ member.avatar }}" alt=""><h4>{{ member.name }}</h4><h6>{{ member.position }}</h6></div>'
+                    //templateUrl: 'member-simple-bc.html'
+                    templateUrl: function (elem, attr) {
+
+                        attr.type = attr.type||'simple';
+
+                        return 'member-'+attr.type+'-bc.html';
+
+                    }
+                };
+
+            });
+
+        </script>
+    </body>
+</html>
