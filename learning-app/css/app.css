@@ -1,0 +1,43 @@
+.user-avatar{
+    float: right;
+    height: 25px;
+}
+
+.light{
+    background-color: #ddd;
+}
+
+.dark{
+    background-color: #ccc;
+}
+
+.strong{
+    font-weight: bold;
+}
+
+.underscore{
+    text-decoration: underline;
+}
+
+.last{
+    background-color: red;
+}
+
+.middle{
+    background-color: orange;
+}
+
+.first{
+    background-color: green;
+}
+
+
+.copy-info{
+	color: green;
+	font-size: .9em;
+}
+
+	.red-info{
+	font-size: .7em;
+	color: red;
+}

@@ -11,6 +11,7 @@
 
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/styles.css" rel="stylesheet">
+        <link href="css/app.css" rel="stylesheet">
     </head>
     <body>
 
@@ -23,12 +24,17 @@
         </nav>
 
         <div class="container" ng-controller="FirstController">
-            <div class="row">
+            <div ng-show="showUsers.length == 0" class="row">
 
-                <h2 class="text-center"><strong>Zamówienie dla {{ userName }}</strong></h2>
+                <h2 class="text-center" ng-bind-html="htmlCode"></h2>
+                <hr>
+               
+            <div class="row">
+                <div ng-include="'member-tmpl.html'"></div>
+            </div>
 
                 <hr>
-
+               
                 <div class="col-xs-6">
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="(id, product) in shoppingCart">
@@ -46,27 +52,204 @@
                     <button ng-show="shippingPrice() > 0" class="btn btn-success" ng-click="confirmOrder()">Złóż zamówienie</button>
 
                     <button ng-show="shippingPrice() > 0"class="btn btn-danger pull-right" ng-click="clearCart()">Wyczyść koszyk</button>
+
+                     <hr>
+                    
                 </div>
 
                 <div class="col-xs-6">
                     <div class="well">Twój komentarz: {{ comment }}</div>
-                    <textarea class="form-control" ng-model="comment"></textarea>
+                     <textarea class="form-control" ng-model="comment"></textarea>
                 </div>
 
             </div>
+
+            <hr>
+
+            <div class="row">
+            <div ng-show="formSave" class="alert alert-success">
+                    <strong>Sukces!</strong> Twoje dane zostały zapisane!
+                </div>
+
+                <div ng-show="formSave" class="well" >
+                    <strong>Login: </strong> {{ member.login }} <br>
+                    <strong>E-mail: </strong> {{ member.email }} <br>
+                    <strong>Specjalizacja: </strong> {{ member.specialization.name }} <br>
+                    <strong>Technologie: </strong> <span ng-repeat="tech in member.technologies">{{ tech.name }}, </span> <br>
+                    <strong>Typ konta: </strong> {{ member.account }} <br>
+                </div>
+
+                <form class="form-horizontal" ng-hide="formSave" ng-submit="formSave=true" novalidate>
+
+                    <div class="form-group">
+                        <label for="uLogin" class="col-sm-2 control-label">Login</label>
+
+                        <div class="col-sm-6">
+                            <input
+                                id="uLogin"
+                                type="text"
+                                ng-model="member.login"
+                                ng-focus="loginPrompt = true"
+                                ng-blur="loginPrompt = false"
+                                class="form-control">
+                        </div>
+
+                        <div ng-show="loginPrompt" class="col-sm-4" style="font-size: .7em; padding: 8px 0; color: darkred;">
+                            Na podstawie Twojego loginu utworzymy konto e-mail.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uEmail" class="col-sm-2 control-label">E-mail</label>
+
+                        <div class="col-sm-8">
+                            <input
+                                id="uEmail"
+                                type="email"
+                                ng-disabled="useEduEmail"
+                                ng-readonly="useEduEmail"
+                                ng-model="member.email"
+                                class="form-control">
+                        </div>
+
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input
+                                        ng-model="useEduEmail"
+                                        ng-change="member.email = member.login+'@eduweb.pl'"
+                                        ng-disabled="!member.login"
+                                        type="checkbox">
+
+                                     Użyj e-maila w domenie eduweb
+                                     <span ng-show="member.login">({{ member.login }}@eduweb.pl)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uSpec" class="col-sm-2 control-label">Specjalizacja</label>
+
+                        <div class="col-sm-8">
+                            <select
+                                id="uSpec"
+                                ng-model="member.specialization"
+                                ng-options="spec.name group by spec.type for spec in specializations"
+                                class="form-control">
+                                <option value="">-- wybierz specjalizacje --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uSpec" class="col-sm-2 control-label">Ulubione technologie</label>
+
+                        <div class="col-sm-8">
+                            <div class="checkbox" ng-repeat="tech in technologies">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        ng-model="tech.selected"
+                                        value="{{ tech.name }}"
+                                        ng-change="populateTechs()"
+                                        name="techs[]">
+                                    {{ tech.name }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uSpec" class="col-sm-2 control-label">Typ konta</label>
+
+                        <div class="col-sm-8">
+                            <div class="radio" ng-repeat="type in accountTypes">
+                                <label>
+                                    <input
+                                        ng-model="member.account"
+                                        ng-value="type"
+                                        type="radio">
+                                    {{ type }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-10 col-sm-offset-2">
+                        <button class="btn btn-success">Zapisz dane</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <select class="form-control" ng-model="showUsers">
+                    <option value="all">Wszyscy</option>
+                    <option value="active">Aktywni</option>
+                    <option value="admin">Administatorzy</option>
+                </select>
+            </div>
+
+            <div class="row text-center" ng-switch on="showUsers">
+
+                <div class="col-xs-12" ng-switch-default>Wybierz listę jaką chcesz wyświetlić.</div>
+
+                <div class="col-xs-12" ng-switch-when="all">
+                    <h3>Wszyscy użytkownicy</h3>
+
+                    <ul class="list-group" ng-if="users.length">
+                        <li class="list-group-item" ng-repeat="user in users" ng-class="{first: $first, last: $last, middle: $middle, strong: $odd, underscore: $even}">
+                            {{ $index }} {{ user.name }}
+                            <img class="user-avatar" ng-src="{{ user.avatar }}" alt="">
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xs-12" ng-switch-when="active">
+                    <h3>Aktywni użytkownicy</h3>
+
+                    <ul class="list-group" ng-if="users.length">
+                        <li class="list-group-item" ng-repeat="(id, user) in users | filterUser:'active':'all'" ng-class-even="'underscore'" ng-class-odd="'strong'">
+                            {{ id }} {{ user.name }}
+                            <img class="user-avatar" ng-src="{{ user.avatar }}" alt="">
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xs-12" ng-switch-when="admin">
+                    <h3>Administratorzy</h3>
+
+                    <ul class="list-group" ng-if="users.length">
+                        <li class="list-group-item" ng-repeat="(id,user) in users | filterUser:'all':'admin'" ng-style="adminStyle">
+                            {{ id }} {{ user.name }}
+                            <img class="user-avatar" ng-src="{{ user.avatar }}" alt="">
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+      
         </div>
 
         <script src="js/jquery.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/angular.min.js"></script>
+        <script src="js/angular-sanitize.min.js"></script>
         <script src="js/angular-locale_pl-pl.js"></script>
         <script src="js/main.js"></script>
          <script>
-            var app = angular.module('firstApp', []);
+            var app = angular.module('firstApp', ['ngSanitize']);
 
-            app.controller('FirstController', ['$scope', 'userProvider', 'limitToFilter', function($scope, userProvider, limitToFilter){
+            app.controller('FirstController', ['$scope', 'userProvider', 'limitToFilter', 'filterFilter', function($scope, userProvider, limitToFilter,filterFilter){
 
+                $scope.userName = userProvider.fullName();
+                $scope.user = userProvider;
                 $scope.comment = limitToFilter('...dodaj komentarz obcięty...', 14);
+                $scope.htmlCode = '<strong> Zamówienie dla ' +  $scope.userName +' </strong>';
 
                 $scope.shoppingCart = [
                     { name: 'Sekrety Photoshop - Tips & Tricks', price: 99 },
@@ -74,6 +257,87 @@
                     { name: 'Sekrety Photoshop - Tips & Tricks', price: 99 },
                     { name: 'Kreacje 3D w Modo Z Photoshop, Illustrator i ZBrush', price: 129 }
                 ];
+
+                $scope.showUsers = "";
+                $scope.adminStyle = {
+                    color: 'red',
+                    fontWeight: 'bold',
+                    textDecoration: 'underline'
+                };
+
+                $scope.users = [
+                    { name: 'Asia', active: true, role: "user", avatar: 'img/comedian.jpg' },
+                    { name: 'Jarek', active: true, role: "user", avatar: 'img/confused.jpg' },
+                    { name: 'Tomek', active: false, role: "user", avatar: 'img/constructive.jpg' },
+                    { name: 'Maciek', active: true, role: "admin", avatar: 'img/cool.jpg' },
+                    { name: 'Kasia', active: true, role: "user", avatar: 'img/enraged.jpg' },
+                    { name: 'Rafał', active: false, role: "user", avatar: 'img/folkloric.jpg' },
+                    { name: 'Filip', active: true, role: "user", avatar: 'img/happy.jpg' },
+                    { name: 'Józek', active: true, role: "admin", avatar: 'img/horny.jpg' },
+                    { name: 'Adam', active: true, role: "user", avatar: 'img/comedian.jpg' },
+                    { name: 'Zuzia', active: true, role: "admin", avatar: 'img/folkloric.jpg' },
+                    { name: 'Grzegorz', active: true, role: "user", avatar: 'img/happy.jpg' }
+                ];
+
+                $scope.loginPrompt = false;
+                $scope.useEduEmail = false;
+                $scope.formSave = false;
+
+                $scope.member = {};
+                $scope.specializations = [
+                    { name: 'ASP.NET', type: 'Programowanie' },
+                    { name: 'PHP', type: 'Programowanie' },
+                    { name: 'HTML/CSS', type: 'Programowanie' },
+                    { name: 'Photoshop', type: 'Grafika' },
+                    { name: 'Illustrator', type: 'Grafika' },
+                    { name: 'Premiere', type: 'Video' },
+                    { name: 'Photoshop', type: 'Video' },
+                ];
+
+                $scope.technologies = [
+                    { name: 'Photoshop', selected: false },
+                    { name: 'Illustrator', selected: false },
+                    { name: 'PHP', selected: false },
+                    { name: 'ASP.NET', selected: false },
+                    { name: 'JavaScript', selected: false },
+                    { name: 'HTML/CSS', selected: false },
+                    { name: 'MySQL', selected: false },
+                    { name: 'JAVA', selected: false }
+                ];
+
+                $scope.accountTypes = [
+                    'Standard',
+                    'Optimum',
+                    'Premium',
+                    'Premium+'
+                ];
+                $scope.populateTechs = function () {
+
+                    $scope.member.technologies = filterFilter($scope.technologies, { selected: true });
+
+                };
+
+                $scope.accountNoCopied = false;
+                $scope.accountNoPaste = false;
+                $scope.oneClickAlert = false;
+                $scope.copyAccountNo = function () {
+                    $scope.accountNoCopied = true;
+                };
+
+                $scope.pasteAccountNo = function () {
+                    $scope.accountNoPaste = true;
+                };
+
+                $scope.preventOneClick = function () {
+                    $scope.oneClickAlert = true;
+                };
+
+                $scope.makeTransfer = function () {
+                    $scope.oneClickAlert = false;
+                    alert('Przelew został zrealizowany');
+                };
+
+
 
                 $scope.shippingPrice = function (){
                     var val = 0;
@@ -83,8 +347,6 @@
                     console.log(val);
                     return val;
                 };
-
-                $scope.userName = userProvider.fullName();
 
                 $scope.confirmOrder = function () {
                     alert('Dziękujemy! Twoje zamówienie zostało przyjęte!');
@@ -103,11 +365,55 @@
 
             }]);
 
+            app.filter('filterUser', function () {
+                return function (users, type, role) {
+                    booleanType = false;
+                    if(type=='active'){
+                        booleanType = true;
+                    }
+                    var result = {};
+                    var i = 0;
+                    angular.forEach(users, function(user, key) {
+                        if((role == user.role || role == 'all') && (booleanType == user.active || type == 'all')){
+                            result[i]= user;
+                            i++;
+                        }
+                    });
+                return result;
+                
+                };
+            });   
+
+            app.filter('maskEmail', function () {
+
+                return function (email, length, maskSign) {
+
+                    email = email||'';
+                    length = length||3;
+                    maskSign = maskSign||'*';
+
+                    var parts = email.split('@');
+                    var masked = parts[0].substr(0, length);
+                    var maskLength = parts[0].length - length;
+
+                    for(var i=0; i<maskLength; i++){
+                        masked += maskSign;
+                    }
+
+                    parts[0] = masked;
+
+                    return parts.join('@');
+                };
+
+            });       
+
+
             app.factory('userProvider', function(){
                 return {
                     firstName: 'Tomek',
                     lastName: 'Belina',
-                    email: 'tomek@wp.pl',
+                    email: 'belina.tomasz@wp.pl',
+                    position: 'Developer',
                     fullName: function () {
                         return this.firstName + ' ' + this.lastName;
                     }
