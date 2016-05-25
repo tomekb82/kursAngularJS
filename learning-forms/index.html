@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pl" ng-app="exampleApp">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Kurs AngularJS (eduweb.pl)</title>
+
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,400&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/styles.css" rel="stylesheet">
+
+        <style>
+            .info-block{
+                color: red;
+                font-size: 13px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <a class="navbar-brand" href="#">
+                <img src="img/angularjs-for-header-only.svg" alt="AngularJS">
+            </a>
+
+            <div class="navbar-heading">Walidacja formularza</div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+
+                <form name="form" class="form-horizontal" novalidate>
+
+                    <div ng-show="form.$submitted">
+                        <div ng-show="form.$valid" class="alert alert-success">
+                            <strong>Sukces!</strong> Twoje dane zostały zapisane!
+                        </div>
+
+                        <div ng-show="form.$invalid" class="alert alert-warning">
+                            <strong>Uwaga!</strong> Popraw błędy formularza!
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uName" class="col-sm-2 control-label">Imię i nazwisko*</label>
+
+                        <div class="col-sm-4">
+                            <input
+                                type="text"
+                                name="uName"
+                                id="uName"
+                                ng-model="user.name"
+                                required="required"
+                                class="form-control">
+
+                            <div ng-messages="form.uName.$error" ng-show="form.$submitted || form.uName.$touched">
+                                <span ng-message="required" class="info-block">Musisz podać imię i nazwisko!</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uEmail" class="col-sm-2 control-label">E-mail*</label>
+
+                        <div class="col-sm-4">
+                            <input
+                                type="email"
+                                id="uEmail"
+                                name="uEmail"
+                                ng-model="user.email"
+                                required="required"
+                                class="form-control">
+
+                            <div ng-messages="form.uEmail.$error" ng-show="form.$submitted || form.uEmail.$touched">
+                                <span ng-message="required" class="info-block">Musisz podać e-mail!</span>
+                                <span ng-message="email" class="info-block">Podany e-mail jest niepoprawny</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uPhone" class="col-sm-2 control-label">Telefon</label>
+
+                        <div class="col-sm-4">
+                            <input
+                                type="text"
+                                id="uPhone"
+                                name="uPhone"
+                                ng-model="user.phone"
+                                pattern="\d{3}-\d{3}-\d{3}"
+                                placeholder="format: 123-123-123"
+                                class="form-control">
+
+                            <div ng-messages="form.uPhone.$error" ng-show="form.$submitted || form.uPhone.$touched">
+                                <span ng-message="pattern" class="info-block">Numer telefonu musi być w formacie 123-123-123</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uEvent" class="col-sm-2 control-label">Wydarzenie*</label>
+
+                        <div class="col-sm-4">
+                            <select
+                                id="uEvent"
+                                name="uEvent"
+                                ng-model="user.event"
+                                required="required"
+                                class="form-control">
+                                    <option value="">-- wybierz wydarzenie --</option>
+                                    <option value="angular">Angular - Mistrzowskie aplikacje</option>
+                                    <option value="js">JavaScript - Od zera do bohatera</option>
+                                    <option value="html5">HTML5 dla zielonych</option>
+                            </select>
+
+                            <div ng-messages="form.uEvent.$error" ng-show="form.$submitted || form.uEvent.$touched">
+                                <span ng-message="required" class="info-block">Wybierz wydarzenie na jakie chcesz się zapisać</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uTickets" class="col-sm-2 control-label">Ilość biletów*</label>
+
+                        <div class="col-sm-3">
+                            <input
+                                type="number"
+                                id="uTickets"
+                                name="uTickets"
+                                ng-model="user.tickets"
+                                required="required"
+                                min="1"
+                                max="4"
+                                class="form-control">
+
+                            <div ng-messages="form.uTickets.$error" ng-show="form.$submitted || form.uTickets.$touched">
+                                <span ng-message="required" class="info-block">Podaj ilość biletów, jaką chcesz zarezerwować</span>
+                                <span ng-message="min" class="info-block">Minimalna ilość biletów to 1</span>
+                                <span ng-message="max" class="info-block">Maksymalna ilość biletów to 4</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        id="uConfirm"
+                                        name="uConfirm"
+                                        ng-model="user.confirm"
+                                        required="">
+                                        Zgadzam się z regulaminem szkolenia*
+                                </label>
+                            </div>
+
+                            <div ng-messages="form.uConfirm.$error" ng-show="form.$submitted || form.uConfirm.$touched">
+                                <span ng-message="required" class="info-block">Potwierdź regulamin</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-10 col-sm-offset-2">
+                        <button class="btn btn-success">Zapisz się na szkolenie</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="js/angular-messages.min.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+            var app = angular.module('exampleApp', ['ngMessages']);
+        </script>
+    </body>
+</html>
