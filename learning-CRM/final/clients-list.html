@@ -1,0 +1,108 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="flat-panel">
+
+            <div class="flat-panel-header">
+                <h4 class="flat-panel-heading">Wyszkiwanie i filtracja</h4>
+            </div>
+            <div class="flat-panel-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-4">
+                            <div class="form-group">
+                                <label for="filter-company-name" class="col-sm-3 col-xs-12 control-label">Wyszukaj</label>
+
+                                <div class="col-sm-9 col-xs-12">
+                                    <input id="filter-company-name" ng-model="filterBy.company_name" type="text" class="form-control" placeholder="Podaj nazwę firmy">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-4">
+                            <div class="form-group">
+                                <label for="filter-sector" class="col-sm-3 col-xs-12 control-label required">Branża</label>
+
+                                <div class="col-sm-9 col-xs-12">
+                                    <select ng-model="filterBy.sector_id" id="filter-sector" class="form-control" >
+                                        <option value=""></option>
+                                        <option ng-repeat="sector in sectors" value="{{ sector.id }}">{{ sector.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-4">
+                            <div class="form-group">
+                                <label for="filter-manager" class="col-sm-3 col-xs-12 control-label required">Opiekun klienta</label>
+
+                                <div class="col-sm-9 col-xs-12">
+                                    <select ng-model="filterBy.account_manager_id" id="filter-manager" class="form-control">
+                                        <option value=""></option>
+                                        <option ng-repeat="user in users" value="{{ user.id }}">{{ user.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="flat-panel">
+            <div class="flat-panel-header">
+                <h3 class="flat-panel-heading">
+                    Klienci
+
+                    <a href="/#/clients/new" class="label label-success pull-right" title="Dodaj nowego klienta"><i class="glyphicon glyphicon-plus"></i></a>
+                </h3>
+            </div>
+            <div class="flat-panel-body">
+                <table class="no-border table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 70px;">
+                                <span ng-click="changeOrder('id')" class="sort-btn">
+                                    ID
+                                    <i ng-show="isOrderedBy('id')" class="glyphicon" ng-class="{'glyphicon-chevron-up': !isOrderedReverse(), 'glyphicon-chevron-down':isOrderedReverse()}"></i>
+                                </span>
+                            </th>
+                            <th>
+                                <span ng-click="changeOrder('company_name')" class="sort-btn">
+                                    Nazwa firmy
+                                    <i ng-show="isOrderedBy('company_name')" class="glyphicon" ng-class="{'glyphicon-chevron-up': !isOrderedReverse(), 'glyphicon-chevron-down':isOrderedReverse()}"></i>
+                                </span>
+                            </th>
+                            <th class="hidden-xs">
+                                <span ng-click="changeOrder('sector_name')" class="sort-btn">
+                                    Branża
+                                    <i ng-show="isOrderedBy('sector_name')" class="glyphicon" ng-class="{'glyphicon-chevron-up': !isOrderedReverse(), 'glyphicon-chevron-down':isOrderedReverse()}"></i>
+                                </span>
+                            </th>
+                            <th class="hidden-xs">
+                                <span ng-click="changeOrder('account_manager_name')" class="sort-btn">
+                                    Opiekun klienta
+                                    <i ng-show="isOrderedBy('account_manager_name')" class="glyphicon" ng-class="{'glyphicon-chevron-up': !isOrderedReverse(), 'glyphicon-chevron-down':isOrderedReverse()}"></i>
+                                </span>
+                            </th>
+                            <th class="text-center">Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody class="no-border">
+                         <tr ng-repeat="client in clients | filter: filterBy | orderBy: orderByColumn : orderByDir">
+                            <td class="text-center">{{ client.id }}</td>
+                            <td>{{ client.company_name }}</td>
+                            <td class="hidden-xs">{{ client.sector_name }}</td>
+                            <td class="hidden-xs">{{ client.account_manager_name }}</td>
+                            <td class="text-center"><a href="/#/clients/{{ client.id }}" class="label label-primary">Szczegóły</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
