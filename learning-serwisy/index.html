@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pl" ng-app="exampleApp">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Kurs AngularJS</title>
+
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,400&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/styles.css" rel="stylesheet">
+
+        <style>
+            .bc-style{
+                float: left;
+                width: 205px;
+                margin: 10px;
+            }
+
+            .action-btn{
+                float: left;
+                margin-top: 17px;
+                margin-left: 15px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <a class="navbar-brand" href="#">
+                <img src="img/angularjs-for-header-only.svg" alt="AngularJS">
+            </a>
+
+            <div class="navbar-heading">Learning-services</div>
+        </nav>
+
+        <div class="container" ng-controller="ExampleController">
+            <div class="row text-center">
+                <div class="col-sm-6">
+                    $timeout
+                    <div class="well">
+                        {{ status }}
+                    </div>
+                    <button class="btn btn-warning" ng-click="stopLogin()">Zatrzymaj logowanie</button>
+                </div>
+                <div class="col-sm-6">
+                    $interval
+                    <div class="well">{{ currDate | date: 'HH:mm:ss' }}</div>
+                    <button class="btn btn-warning" ng-click="stopClock()">Zatrzymaj aktualizację godziny</button>
+                </div>
+                <hr>
+            </div>
+            <hr>
+
+
+            <h3 class="text-center"> $http, $log </h3>
+            <div class="row clearfix">
+                <h3 class="pull-left">Zespół pierwszy</h3>
+
+                <button class="btn btn-danger action-btn" ng-click="notifyTeam(team1)">
+                    Wyślij wiadomość
+                </button>
+
+                <div class="clearfix"></div>
+
+                <div ng-repeat="member in team1">
+                    <business-card type="simple" member="member"></business-card>
+                </div>
+
+                <div class="pull-right">
+                    <business-card member="teamLeader"></business-card>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row clearfix">
+                <h3 class="pull-left">Zespół drugi</h3>
+
+                <button class="btn btn-danger action-btn" ng-click="notifyTeam(team2)">
+                    Wyślij wiadomość
+                </button>
+
+                <div class="clearfix"></div>
+
+                <div ng-repeat="member in team2">
+                    <business-card type="extended" member="member"></business-card>
+                </div>
+            </div>
+
+
+
+            <hr>
+            <div class="row text-center">
+                <h3 class="text-center"> $cookies i $cookieStore </h3>
+                <div class="well">
+                    {{ ciasteczka | json }}
+                </div>
+
+                <div class="col-xs-6"><input type="text" class="form-control" ng-model="cName" placeholder="Podaj nazwę ciasteczka"></div>
+                <div class="col-xs-6"><input type="text" class="form-control" ng-model="cValue" placeholder="Podaj wartość ciasteczka"></div>
+
+                <div class="clearfix"></div>
+
+                <hr>
+
+                <button class="btn btn-success" ng-disabled="!cName || !cValue"  ng-click="saveCookie()">Zapisz</button>
+                <button class="btn btn-danger" ng-disabled = "!cName" ng-click="delCookie()">Usun</button>
+                <button class="btn btn-info" ng-disabled = "!cName" ng-click="showCookie()">Pokaz</button>
+            </div>
+            
+        </div>
+
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="js/angular-cookies.min.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+            var app = angular.module('exampleApp', ['ngCookies']);
+
+            app.controller('ExampleController', ['$scope', '$timeout', '$interval', '$http', '$log', '$cookies', '$cookieStore','teamNotifier', 'memberLoader', function($scope, $timeout, $interval, $http, $log, $cookies, $cookieStore, teamNotifier,memberLoader){
+                
+                /**
+                Interval, Timeout
+                */
+                $scope.status = 'Trwa logowanie';
+
+                var timeoutId = $timeout(function () {
+                    $scope.status = 'Poprawnie zalogoano!';
+                }, 2000);
+
+                $scope.stopLogin = function () {
+                    $timeout.cancel(timeoutId);
+                };
+
+                $scope.startDate = function () {
+                    $scope.currDate = new Date();
+                };
+
+                $scope.startDate();
+
+                var intervalId = $interval(function () {
+                    $scope.startDate();
+                }, 1000);
+
+                $scope.stopClock = function () {
+                    $interval.cancel(intervalId);
+                };
+
+                /** 
+                HTTP
+                */
+                $scope.team1 = [];
+
+                memberLoader('team1', function (data) {
+                    $scope.team1 = data;
+                });
+
+                memberLoader('team2', function (data) {
+                    $scope.team2 = data;
+                });
+
+                memberLoader('leader', function (data) {
+                    $scope.teamLeader = data;
+                });
+
+                $scope.notifyTeam = function (team) {
+                    teamNotifier(team, 'Do roboty');
+                };    
+
+                 /**
+                 Cookies/ Cookie Store(lepszy od cookies)  
+                 */
+                 var userObj = {
+                    name: 'Adam Nowak',
+                    position: 'Developer',
+                    technologies: ['PHP', 'HTML', 'CSS', 'JavaScript']
+                };
+
+                $scope.ciasteczka = $cookies;
+
+                //$cookies.uzytkownik = userObj;
+                $cookieStore.put('uzytkownikNowy', userObj);
+
+                $scope.saveCookie = function () {
+
+                    //$cookies[$scope.cName] = $scope.cValue;
+                    $cookieStore.put($scope.cName, $scope.cValue);
+
+                };
+
+                $scope.delCookie = function () {
+
+                    //delete $cookies[$scope.cName];
+                    $cookieStore.remove($scope.cName);
+                    $scope.cValue = '';
+
+                };
+
+                $scope.showCookie = function () {
+                    $scope.cValue = $cookieStore.get($scope.cName);
+
+                    //alert($cookies[$scope.cName]);
+                    console.log($cookieStore.get($scope.cName));
+                    
+
+                }; 
+
+            }]);
+            app.factory('teamNotifier', ['$log', function($log){
+                var notifyMember = function (member, message) {
+                    $log.info('Wysyłam wiadomość "'+message+'" do '+member.name+' ('+member.email+')');
+                };
+
+                return function (team, message){
+                    for (var i = 0; i < team.length; i++) {
+                        notifyMember(team[i], message);
+                    };
+                };
+            }]);
+
+            app.factory('memberLoader', ['$http', '$log', function($http, $log){
+                var urls = {
+                    'team1': 'members-team1.json',
+                    'team2': 'members-team2.json',
+                    'leader': 'team-leader.json'
+                };
+
+                return function (type, callback){
+                    var url = urls[type];
+                    callback = callback||function(){};
+
+                    $http.get(url)
+                        .success(callback)
+                        .error(function(data, status){
+                            $log.error('Wystąpiłl błąd "'+status+'" podczas żądania: "'+url+'"');
+                        });
+                };
+            }]);
+
+            app.directive('businessCard', function () {
+
+                return {
+                    restrict: 'AEC',
+                    scope: {
+                        member: '='
+                    },
+                    templateUrl: function (elem, attr) {
+                        attr.type = attr.type||'simple';
+
+                        return 'member-'+attr.type+'-bc.html';
+                    }
+                };
+
+            });
+        </script>
+    </body>
+</html>
