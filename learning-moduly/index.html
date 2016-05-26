@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pl" ng-app="exampleApp">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Kurs AngularJS</title>
+
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,400&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/styles.css" rel="stylesheet">
+
+        <style>
+            .bc-style{
+                float: left;
+                width: 205px;
+                margin: 10px;
+            }
+
+            .action-btn{
+                float: left;
+                margin-top: 17px;
+                margin-left: 15px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <a class="navbar-brand" href="#">
+                <img src="img/angularjs-for-header-only.svg" alt="AngularJS">
+            </a>
+
+            <div class="navbar-heading">Learning - modules</div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12" ng-controller="ProjectsController">
+                    <h3>Projekty w realizacji</h3>
+                    <div class="well bc-style" ng-repeat="project in projects">
+                        <h4>{{ project.name }}</h4>
+                        <h5>{{ project.client }}</h5>
+                    </div>
+                </div>
+
+                <div class="col-xs-12" ng-controller="TeamsController">
+                    <hr>
+
+                    <div class="clearfix">
+                        <h3 class="pull-left">Zespół pierwszy</h3>
+
+                        <button class="btn btn-danger action-btn" ng-click="notifyTeam(team1)">Wyślij wiadomość</button>
+
+                        <div class="clearfix"></div>
+
+                        <div ng-repeat="member in team1">
+                            <business-card type="extended" member="member"></business-card>
+                        </div>
+
+                        <div class="pull-right">
+                            <business-card member="teamLeader"></business-card>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="clearfix">
+                        <h3 class="pull-left">Zespół drugi</h3>
+
+                        <button class="btn btn-danger action-btn" ng-click="notifyTeam(team2)">Wyślij wiadomość</button>
+
+                        <div class="clearfix"></div>
+
+                        <div ng-repeat="member in team2">
+                            <business-card type="extended" member="member"></business-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="js/filters.js"></script>
+        <script src="js/directives.js"></script>
+        <script src="js/services.js"></script>
+        <script src="js/controllers.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+            var app = angular.module('exampleApp', ['exampleControllers']);
+        </script>
+    </body>
+</html>

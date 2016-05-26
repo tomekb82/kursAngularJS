@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Michał Kowal",
+        "position": "WebDeveloper",
+        "avatar": "img/folkloric.jpg",
+        "email": "michal@wp.pl"
+    },
+    {
+        "name": "Arek Suchy",
+        "position": "Front-end Developer",
+        "avatar": "img/confused.jpg",
+        "email": "arek@wp.pl"
+    },
+    {
+        "name": "Rafał Nijaki",
+        "position": "Back-end Developer",
+        "avatar": "img/comedian.jpg",
+        "email": "rafal@wp.pl"
+    }
+]
