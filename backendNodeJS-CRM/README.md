@@ -18,3 +18,5 @@ INSERT INTO employees (id, name, location) VALUES
 (4, 'Lesley', 'Scotland');
 
 - connect do DB: run node app.js
+
+- watch changes: grunt watch
