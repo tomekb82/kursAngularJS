@@ -50,7 +50,48 @@ router.get('/', function(req, res) {
 });
 
 // more routes for our API will happen here
-// on routes that end in /bears
+// on routes that end in /users
+// ----------------------------------------------------
+router.route('/users')
+  // create a user (accessed at POST http://localhost:8080/api/users
+  .post(function(req, res) {
+      var user = {name: req.body.name}
+      con.query('INSERT INTO users SET ?', user, function(err,result){
+        if(err) 
+          res.json(err);
+        //console.log('Last insert ID:', result.insertId);
+        res.json({message: 'User added successfully.'});
+      });
+  })
+  // get all the users (accessed at GET http://localhost:8080/api/users)
+  .get(function(req, res) {
+    con.query('SELECT * FROM users',function(err,users){
+      if(err) 
+        res.send(err);
+      //for (var i = 0; i < users.length; i++) {
+      //  console.log(users[i].name);
+      //};
+      res.json(users);
+    });
+  });
+
+// on routes that end in /sectors
+// ----------------------------------------------------
+router.route('/sectors')
+
+  // get all the users (accessed at GET http://localhost:8080/api/sectors)
+  .get(function(req, res) {
+    con.query('SELECT * FROM company_sectors',function(err,sectors){
+      if(err) 
+        res.send(err);
+      //for (var i = 0; i < sectors.length; i++) {
+      //  console.log(sectors[i].name);
+      //};
+      res.json(sectors);
+    });
+  });  
+
+// on routes that end in /clients
 // ----------------------------------------------------
 router.route('/clients')
 
@@ -66,12 +107,15 @@ router.route('/clients')
   })
   // get all the clients (accessed at GET http://localhost:8080/api/clients)
   .get(function(req, res) {
-    con.query('SELECT * FROM employees',function(err,clients){
+    var sql = "SELECT c.*, cs.name as sector_name, u.name as account_manager_name FROM clients as c \
+      LEFT JOIN company_sectors as cs ON c.sector_id = cs.id \
+      LEFT JOIN users as u ON c.account_manager_id = u.id" ;
+    con.query(sql,function(err,clients){
       if(err) 
         res.send(err);
-		  //for (var i = 0; i < clients.length; i++) {
-  		//  console.log(clients[i].name);
-		  //};
+		  for (var i = 0; i < clients.length; i++) {
+  		  console.log(clients[i].name);
+		  };
       res.json(clients);
     });
   });
@@ -83,7 +127,7 @@ router.route('/clients/:id')
   // get the client with that id (accessed at GET http://localhost:8080/api/clients/:id)
   .get(function(req, res) {
 
-		con.query('SELECT * FROM employees where id=?',req.params.id ,function(err,clients){
+		con.query('SELECT * FROM clients where id=?',req.params.id ,function(err,clients){
       if(err)
         res.send(err);
       res.json(clients);
@@ -102,7 +146,7 @@ router.route('/clients/:id')
         })
   // delete the client with this id (accessed at DELETE http://localhost:8080/api/clients/:id)
   .delete(function(req, res) {
-	  con.query('DELETE FROM employees WHERE id = ?', [req.params.id], function (err, result) {
+	  con.query('DELETE FROM clients WHERE id = ?', [req.params.id], function (err, result) {
   	  if (err) 
         res.send(err);
 	    //console.log('Deleted ' + result.affectedRows + ' rows');
