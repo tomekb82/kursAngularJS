@@ -1,8 +1,10 @@
 
+1. Connect to DB
+
 - install node-mysql
 (from package.json run npm install)
 
-- set DB
+- set DB in MySQL
 
 CREATE TABLE employees (
   id int(11) NOT NULL AUTO_INCREMENT,
@@ -20,3 +22,13 @@ INSERT INTO employees (id, name, location) VALUES
 - connect do DB: run node app.js
 
 - watch changes: grunt watch
+
+===============================================================
+
+2. REST with NodeJS
+
+- dependencies: "body-parser": "~1.0.1"
+
+- start server: node server.js 
+
+- test API w Chromie: Postman
