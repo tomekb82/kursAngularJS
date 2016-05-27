@@ -15,7 +15,7 @@
                         <label for="filter-company-name" class="col-sm-3 col-xs-12 control-label">Wyszukaj</label>
 
                         <div class="col-sm-9 col-xs-12">
-                            <input id="filter-company-name" type="text" class="form-control" placeholder="Podaj nazwę firmy">
+                            <input id="filter-company-name" ng-model="filterBy.company_name" type="text" class="form-control" placeholder="Podaj nazwę firmy">
                         </div>
                     </div>
                 </div>
@@ -25,8 +25,9 @@
                         <label for="filter-sector" class="col-sm-3 col-xs-12 control-label required">Branża</label>
 
                         <div class="col-sm-9 col-xs-12">
-                            <select id="filter-sector" class="form-control" >
+                            <select id="filter-sector" ng-model="filterBy.sector_name" class="form-control" >
                                 <option value=""></option>
+                                <option ng-repeat="sector in sectors" value="{{ sector.name }}">{{ sector.name }}</option>
                             </select>
                         </div>
                     </div>
@@ -37,7 +38,7 @@
                         <label for="filter-manager" class="col-sm-3 col-xs-12 control-label required">Opiekun klienta</label>
 
                         <div class="col-sm-9 col-xs-12">
-                            <select id="filter-manager" class="form-control">
+                            <select id="filter-manager" class="form-control" ng-model="filterBy.account_manager_name">
                                 <option value=""></option>
                             </select>
                         </div>
@@ -93,7 +94,7 @@
                 </tr>
             </thead>
             <tbody class="no-border">
-                 <tr ng-repeat="(id, client) in clients">
+                 <tr ng-repeat="(id, client) in clients | filter : filterBy">
                     <td class="text-center">{{client.id}}</td>
                     <td>{{client.company_name}}</td>
                     <td class="hidden-xs">{{client.sector_name}}</td>
