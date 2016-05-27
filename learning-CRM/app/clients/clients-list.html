@@ -40,6 +40,7 @@
                         <div class="col-sm-9 col-xs-12">
                             <select id="filter-manager" class="form-control" ng-model="filterBy.account_manager_name">
                                 <option value=""></option>
+                                <option ng-repeat="user in users" value="{{ user.name }}">{{ user.name }}</option>
                             </select>
                         </div>
                     </div>

@@ -1,13 +1,13 @@
 (function(){
 
     angular.module('crmApp')
-    .factory('sectorsService', ['$http','$log', function($http,$log){
-        var _getSectors = function (callback) {
+    .factory('usersService', ['$http','$log', function($http,$log){
+        var _getUsers = function (callback) {
 
         	callback = callback||function(){};
 
-            //http.get('app/sectors/sectors.json')
-            $http.get('http://localhost:8089/api/sectors')
+            //$http.get('app/users/users.json')
+            $http.get('http://localhost:8089/api/users')
                 .success(function (data) {
                     callback(data);
                 })
@@ -17,7 +17,7 @@
 
 		};   
         return {
-        	getSectors: _getSectors
+        	getUsers: _getUsers
         };
     }]);
 

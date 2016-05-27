@@ -6,8 +6,8 @@
 
         	callback = callback||function(){};
 
-            $http.get('app/clients/clients.json')
-            //$http.get('/crmApp/clients')
+            //$http.get('app/clients/clients.json')
+            $http.get('http://localhost:8089/api/clients')
                 .success(function (data) {
                     callback(data);
                 })
