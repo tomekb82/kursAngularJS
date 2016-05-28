@@ -36,10 +36,33 @@
                     .success(success);
 
         };
+        var _saveNewClient = function (clientData, success) {
+
+            success = success||function(){};
+
+            $http.post('http://localhost:8089/api/clients', clientData)
+                .success(function (data) {
+
+                    console.log(data);
+                    success(data.insertId);
+
+                });
+
+        };
+        var _deleteClient = function (clientId, success) {
+
+            success = success||function(){};
+
+            $http.delete('http://localhost:8089/api/clients/' + clientId)
+                .success(success);
+
+        };
         return {
             getClient: _getClient,
         	getClients: _getClients,
-            updateClient: _updateClient
+            updateClient: _updateClient,
+            saveNewClient: _saveNewClient,
+            deleteClient: _deleteClient
         };
     }]);
 

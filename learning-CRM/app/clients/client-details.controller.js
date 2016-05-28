@@ -1,8 +1,8 @@
 (function(){
 
     angular.module('crmApp')
-    .controller('ClientDetailsCtrl', ['$scope', '$routeParams', 'clientsService', 'usersService', 'sectorsService', 
-        function($scope, $routeParams, clientsService, usersService, sectorsService){
+    .controller('ClientDetailsCtrl', ['$scope', '$routeParams', '$location','clientsService', 'usersService', 'sectorsService', 
+        function($scope, $routeParams, $location, clientsService, usersService, sectorsService){
             $scope.client = {};//{ "id": 1, "company_name": "Lorem ipsum dolor", "contact_name": "Michalina Kwiatkowska", "contact_phone": "53 790 92 21", "contact_email": "MichalinaKwiatkowska@dayrep.com",             "account_manager_id": 1, "notes": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.", "sector_id": 5 };
             $scope.users = []; //[ { "id": 1, "name": "Konstantyn Kowalski" },             { "id": 2, "name": "Łukasz Pawłowski" }];
             $scope.sectors = [];
@@ -29,12 +29,33 @@
             });
 
             $scope.saveClientData = function(){
-                clientsService.updateClient($scope.client.id, $scope.client, function (data) {
-                
-                console.log("UPDATE ok");
-                });
+
+                if('new' == $routeParams.clientId){
+                    clientsService.saveNewClient($scope.client, function (clientId) {
+                        console.log(clientId);
+                        $location.path('/clients/'+clientId);
+                    });
+                }else{
+                    clientsService.updateClient($scope.client.id, $scope.client, function (data) {
+                    
+                    });
+                }
 
             };
+
+            $scope.deleteClient = function () {
+
+                if(!$scope.client.id) return;
+
+                if(!confirm('Czy na pewno chcesz usunąć tego klienta?')) return;
+
+                clientsService.deleteClient($scope.client.id, function () {
+                    alert('Klient został poprawnie usunięty');
+                    $location.path('/#/clients');
+                });
+
+        };
+
 }]);
 
 
