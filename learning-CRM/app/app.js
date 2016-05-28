@@ -10,6 +10,11 @@
                 templateUrl: 'app/clients/clients-list.html',
                 label: 'Lista klientów'
             })
+            .when('/clients/:clientId', {
+                controller: 'ClientDetailsCtrl',
+                templateUrl: 'app/clients/client-details.html',
+                label: 'Karta klienta'
+            })
             .when('/sectors', {
                 controller: 'SectorsListCtrl',
                 templateUrl: 'app/sectors/sectors-list.html',

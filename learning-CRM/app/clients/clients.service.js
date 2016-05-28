@@ -16,8 +16,30 @@
                 });
 
 		};   
+        var _getClient = function (clientId, success, error) {
+
+            success = success||function(){};
+            error = error||function(){};
+
+            $http.get('http://localhost:8089/api/clients/' + clientId)
+                .success(function (data) {
+                    success(data);
+                })
+                .error(error);
+
+        };
+        var _updateClient = function (clientId, clientData, success) {
+
+            success = success||function(){};
+
+            $http.put('http://localhost:8089/api/clients/' + clientId, clientData)
+                    .success(success);
+
+        };
         return {
-        	getClients: _getClients
+            getClient: _getClient,
+        	getClients: _getClients,
+            updateClient: _updateClient
         };
     }]);
 

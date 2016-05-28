@@ -13,7 +13,7 @@
             .when('/clients/:clientId', {
                 controller: 'ClientDetailsCtrl',
                 templateUrl: 'views/client-details.html',
-                label: 'Karta klienta'
+                label: 'Karta klienta',
             })
             .when('/sectors', {
                 controller: 'SectorsCtrl',

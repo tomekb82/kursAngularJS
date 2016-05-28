@@ -92,6 +92,9 @@
                         <label for="account-manager" class="col-lg-2 col-sm-2 col-xs-12 control-label required">Opiekun klienta</label>
 
                         <div class="col-lg-10 col-sm-10 col-xs-12">
+
+
+  
                             <select ng-model="client.account_manager_id" id="account-manager" class="form-control">
                                 <option ng-repeat="user in users" value="{{ user.id }}">{{ user.name }}</option>
                             </select>
