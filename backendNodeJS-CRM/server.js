@@ -97,12 +97,12 @@ router.route('/clients')
 
   // create a client (accessed at POST http://localhost:8080/api/clients
   .post(function(req, res) {
-      var employee = {name: req.body.name, location: req.body.location };
-      con.query('INSERT INTO employees SET ?', employee, function(err,result){
+      
+      con.query('INSERT INTO clients SET ?', req.body, function(err,result){
         if(err) 
 	        res.json(err);
-        //console.log('Last insert ID:', result.insertId);
-        res.json({message: 'Client added successfully.'});
+          console.log('Last insert ID:', result.insertId);
+        res.json(result);
       });
   })
   // get all the clients (accessed at GET http://localhost:8080/api/clients)
