@@ -134,12 +134,31 @@ router.route('/clients/:id')
     });
   })
   // update the client with this id (accessed at PUT http://localhost:8080/api/clients/:id)
-  .put(function(req, res) {
-	  con.query('UPDATE employees SET location = ? Where ID = ?',	[req.body.location, req.params.id], function (err, result) {
+  .put(function(req, res) {  
+
+    var client = req.body;
+
+	  con.query('UPDATE clients SET \
+      company_name=?, \
+      contact_name=?, \
+      contact_phone=?, \
+      contact_email=?, \
+      account_manager_id=?, \
+      notes=?, \
+      sector_id=?\
+      Where ID = ?',	
+        [ client.company_name, 
+          client.contact_name,
+          client. contact_phone,
+          client.contact_email,
+          client.account_manager_id,
+          client.notes,
+          client.sector_id,
+          req.params.id], function (err, result) {
       if (err) 
         res.send(err);
 		  //console.log('Changed ' + result.changedRows + ' rows');
-      res.json({ message: 'Bear updated!' });
+      res.json({ message: 'Client updated!' });
   	});
     
 
