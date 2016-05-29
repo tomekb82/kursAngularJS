@@ -70,11 +70,11 @@
             </div>
             <div class="flat-panel-body">
                 <div ng-repeat="member in devs">
-                    <business-card member="member" ng-click="showUserDetails(member.id)"></business-card>
+                    <business-card member="member" type="dev" ng-click="showUserDetails(member.id)"></business-card>
                 </div>
 
                 <div class="pull-right">
-                    <business-card member="teamLeader" type="extended" ng-click="showUserDetails(member.id)"></business-card>
+                    <business-card member="teamLeader" devs="devs" type="leader" ng-click="showUserDetails(member.id)"></business-card>
                 </div>
             </div>
         </div>
@@ -91,7 +91,7 @@
             </div>
             <div class="flat-panel-body">
                 <div ng-repeat="member in admins">
-                    <div business-card member="member" type="extended" ng-click="showUserDetails(member.id)"></div>
+                    <div business-card member="member" type="admin" ng-click="showUserDetails(member.id)"></div>
                 </div>
             </div>
         </div>
