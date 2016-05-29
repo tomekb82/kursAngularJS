@@ -50,13 +50,42 @@ router.get('/', function(req, res) {
 });
 
 // more routes for our API will happen here
+
+// on routes that end in /clients/:id/timeline
+// ----------------------------------------------------
+router.route('/clients/:id/timeline')
+  // create a user (accessed at POST http://localhost:8080/api/clients/:id/timeline
+  .post(function(req, res) {
+    var timeline = req.body;
+    timeline.client_id = req.params.id;
+    console.log(timeline);
+      con.query('INSERT INTO contact_timeline SET ?', timeline, function(err,result){
+        if(err) 
+          res.json(err);
+        console.log('Last insert ID:', result.insertId);
+        con.query('select t.*, u.name from contact_timeline as t left join users as u on t.client_id = u.id where t.client_id=?',req.params.id ,function(err,timeline){
+          if(err)
+            res.send(err);
+          res.json(timeline);
+        });
+      });
+  })
+  // get the timeline with that id (accessed at GET http://localhost:8080/api/clients/:id/timeline)
+  .get(function(req, res) {
+
+    con.query('select t.*, u.name from contact_timeline as t left join users as u on t.client_id = u.id where t.client_id=?',req.params.id ,function(err,timeline){
+      if(err)
+        res.send(err);
+      res.json(timeline);
+    });
+  });
+
 // on routes that end in /users
 // ----------------------------------------------------
 router.route('/users')
   // create a user (accessed at POST http://localhost:8080/api/users
   .post(function(req, res) {
-      var user = {name: req.body.name}
-      con.query('INSERT INTO users SET ?', user, function(err,result){
+      con.query('INSERT INTO users SET ?', req.body, function(err,result){
         if(err) 
           res.json(err);
         //console.log('Last insert ID:', result.insertId);
