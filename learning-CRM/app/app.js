@@ -1,6 +1,6 @@
 (function(){
 
-    angular.module('crmApp', ['ngRoute', 'ngMessages'])
+    angular.module('crmApp', ['ngRoute', 'ngMessages', 'ng-breadcrumbs'])
 
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 
@@ -40,8 +40,18 @@
 
     }])
 
-    .controller('MainCtrl', ['$scope', function($scope){
+    .controller('MainCtrl', ['$scope', 'routeChecker', 'breadcrumbs', function($scope, routeChecker, breadcrumbs){
+         $scope.routeChecker = routeChecker;
+         $scope.breadcrumbs = breadcrumbs;
 
+    }])
+
+    .factory('routeChecker', ['$location', function($location){
+        return {
+            isActive: function (location) {
+                return (-1 !== $location.path().indexOf(location));
+            }
+        };
     }]);
 
 

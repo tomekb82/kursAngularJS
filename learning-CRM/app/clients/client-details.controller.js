@@ -21,12 +21,10 @@
                 clientsService.getClient(
                     $routeParams.clientId,
                     function (data) {
-                        $scope.client = data[0];   
-                        console.log($scope.client);              
-                        
+                        $scope.client = data[0];              
+
                         timelineService.getClientTimeline($scope.client.id, function (timeline) {
                             $scope.timeline = timeline;
-                            console.log($scope.timeline);
                         });
 
                     },
@@ -42,7 +40,6 @@
             });
             usersService.getUsers(function(users){
                 $scope.users = users;
-                console.log($scope.users);
             });
 
             $scope.saveClientData = function(){
@@ -133,7 +130,6 @@
             $scope.editEvent = function(eventId){
                 $scope.addNewEvent = false;
                 timelineService.getEvent($scope.timeline, eventId, function(event){
-                    console.log(event);
                     $scope.timelineEvent = event;
                 })
               
