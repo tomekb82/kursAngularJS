@@ -127,6 +127,20 @@ router.route('/users')
     });
   });
 
+// on routes that end in /users/:id
+// ----------------------------------------------------
+router.route('/users/:id')
+
+  // get the user with that id (accessed at GET http://localhost:8080/api/users/:id)
+  .get(function(req, res) {
+
+    con.query('SELECT * FROM users where id=?',req.params.id ,function(err,users){
+      if(err)
+        res.send(err);
+      res.json(users);
+    });
+  })
+
 // on routes that end in /sectors
 // ----------------------------------------------------
 router.route('/sectors')
