@@ -62,41 +62,50 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-xs-12">
-        <div class="flat-panel">
-            <div class="flat-panel-header">
-                <h4 class="flat-panel-heading">Projektanci</h4>
-            </div>
-            <div class="flat-panel-body">
-                <div ng-repeat="member in devs">
-                    <business-card member="member" type="dev" ng-click="showUserDetails(member.id)"></business-card>
-                </div>
+<a id="ukryj" ng-show="showUsers" href ng-click="showUsers = !showUsers">Ukryj</a>
+<a id="szczegoly" ng-hide="showUsers" href ng-click="showUsers = !showUsers">Pokaż szczegóły</a>
 
-                <div class="pull-right">
-                    <business-card member="teamLeader" devs="devs" type="leader" ng-click="showUserDetails(member.id)"></business-card>
+<div ng-show="showUsers"> 
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="flat-panel">
+                <div class="flat-panel-header">
+                    <h4 class="flat-panel-heading">Projektanci</h4>
+                </div>
+                <div class="flat-panel-body">
+                    <div class="row clearfix">
+                        <div ng-repeat="member in devs">
+                            <business-card member="member" type="dev" ng-click="showUserDetails(member.id)"></business-card>
+                        </div>
+
+                        <div class="pull-right">
+                            <business-card member="teamLeader" devs="devs" type="leader" ng-click="showUserDetails(member.id)"></business-card>
+                        </div>
+                    </div>    
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-    <hr>
+        <hr>
 
-<div class="row">
-    <div class="col-xs-12">
-        <div class="flat-panel">
-            <div class="flat-panel-header">
-                <h4 class="flat-panel-heading">Administratorzy</h4>
-            </div>
-            <div class="flat-panel-body">
-                <div ng-repeat="member in admins">
-                    <div business-card member="member" type="admin" ng-click="showUserDetails(member.id)"></div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="flat-panel">
+                <div class="flat-panel-header">
+                    <h4 class="flat-panel-heading">Administratorzy</h4>
+                </div>
+                <div class="flat-panel-body">
+                    <div class="row clearfix">
+                        <div ng-repeat="member in admins">
+                            <div business-card member="member" type="admin" ng-click="showUserDetails(member.id)"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>    
-</div>
+        </div>    
+    </div>
+<div>
 
 
 <!-- /content -->

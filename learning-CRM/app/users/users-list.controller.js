@@ -5,6 +5,7 @@
     	function($scope, $location, usersService){
         
             $scope.users = [];
+            $scope.showUsers = false;
 
             $scope.admins = [];
             $scope.devs = [];
