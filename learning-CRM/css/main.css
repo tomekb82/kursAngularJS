@@ -1039,6 +1039,10 @@ ul.timeline li .content .img-thumbnail {
     margin-left: 2px;
 }
 
+.form-err {
+    color: red;
+}
+
 .top-menu{
     margin-bottom: 20px;
 }
