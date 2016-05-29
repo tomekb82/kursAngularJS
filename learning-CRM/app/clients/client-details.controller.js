@@ -12,6 +12,7 @@
 
             $scope.timeline = [];
             $scope.timelineEvent = {};
+            $scope.timelineHelper = timelineService.getTimelineHelper();
             $scope.eventTypes = timelineService.getEventTypes();
             $scope.showSaveTimelinaFormMsg = false;
 

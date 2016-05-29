@@ -2,6 +2,24 @@
 
     angular.module('crmApp')
     .factory('timelineService', ['$http','$log', function($http,$log){
+        var helperOptions = {
+            'phone': {
+                color: 'blue',
+                message: 'telefon do klienta'
+            },
+            'envelope-o': {
+                color: 'green',
+                message: 'wysyłka maila do klienta'
+            },
+            'users': {
+                color: 'purple',
+                message: 'spotkanie z kilentem'
+            },
+            'file-text-o': {
+                color: 'red',
+                message: 'podpisanie umowy z klientem'
+            }
+        };
         var eventTypes = [
             {
                 value: 'phone',
@@ -21,6 +39,11 @@
             }
         ];
         
+         var _timelineHelper = function (contactType, option) {
+            return helperOptions[contactType][option];
+
+        };
+
         var _addTimelineEvent = function(clientId, eventData, success){
 
             success = success||function(){};
@@ -31,19 +54,32 @@
             });
 
         };
+        var __parseTimeline = function (timeline) {
+
+            angular.forEach(timeline, function (element, index) {
+                element['contact_date'] = new Date(element['contact_date']);
+            });
+
+            return timeline;
+        };
+        
         var _getClientTimeline = function(clientId, success, error){
             success = success||function(){};
             error = error||function(){};
 
             $http.get('http://localhost:8089/api/clients/' +clientId+'/timeline')
-                .success(function (data) {
-                    success(data);
+                .success(function (timeline) {
+                    timeline = __parseTimeline(timeline);  
+                    success(timeline);
                 })
                 .error(error);
         };
         return {
             getEventTypes: function(){
                 return eventTypes;
+            },
+            getTimelineHelper: function(){
+                return _timelineHelper;
             },
             addTimelineEvent: _addTimelineEvent,
             getClientTimeline: _getClientTimeline

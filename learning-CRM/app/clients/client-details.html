@@ -237,12 +237,12 @@
 
         <ul ng-show="timeline.length > 0" class="timeline">
             <li ng-repeat="timelineEvent in timeline">
-                <i class="fa fa-file-text-o red"></i>
-                <span class="date">20-sty</span>
+                <i class="fa fa-{{ timelineEvent.contact_type }} {{ timelineHelper(timelineEvent.contact_type, 'color') }}"></i>
+                <span class="date">{{ timelineEvent.contact_date | date : 'dd-MMM' }}</span>
 
                 <div class="content">
                     <p>
-                        <strong>{{timelineEvent.user_name}}</strong> - podpisanie umowy z klientem dnia {{timelineEvent.contact_date}}
+                        <strong>{{timelineEvent.user_name}}</strong> - {{timelineHelper(timelineEvent.contact_type, 'message') }} dnia {{timelineEvent.contact_date | date : 'dd MMMM yyyy o g. H:mm'}}
                     </p>
 
                     <blockquote>
