@@ -54,7 +54,7 @@ router.get('/', function(req, res) {
 // on routes that end in /clients/:id/timeline
 // ----------------------------------------------------
 router.route('/clients/:id/timeline')
-  // create a user (accessed at POST http://localhost:8080/api/clients/:id/timeline
+  // create a timeline (accessed at POST http://localhost:8080/api/clients/:id/timeline
   .post(function(req, res) {
     var timeline = req.body;
     timeline.client_id = req.params.id;
@@ -63,7 +63,7 @@ router.route('/clients/:id/timeline')
         if(err) 
           res.json(err);
         console.log('Last insert ID:', result.insertId);
-        con.query('select t.*, u.name from contact_timeline as t left join users as u on t.client_id = u.id where t.client_id=?',req.params.id ,function(err,timeline){
+        con.query('select t.*, u.name as user_name from contact_timeline as t left join users as u on t.client_id = u.id where t.client_id=?',req.params.id ,function(err,timeline){
           if(err)
             res.send(err);
           res.json(timeline);
@@ -73,11 +73,34 @@ router.route('/clients/:id/timeline')
   // get the timeline with that id (accessed at GET http://localhost:8080/api/clients/:id/timeline)
   .get(function(req, res) {
 
-    con.query('select t.*, u.name from contact_timeline as t left join users as u on t.client_id = u.id where t.client_id=?',req.params.id ,function(err,timeline){
+    con.query('select t.*, u.name as user_name from contact_timeline as t left join users as u on t.user_id = u.id where t.client_id=?',req.params.id ,function(err,timeline){
       if(err)
         res.send(err);
       res.json(timeline);
     });
+  });
+// on routes that end in /clients/:id/timeline/:eventId
+// ----------------------------------------------------
+router.route('/clients/:id/timeline/:eventId')  
+
+   // delete the timeline with this id (accessed at DELETE http://localhost:8080/api/clients/:id/timeline)
+  .delete(function(req, res) {
+    con.query('DELETE FROM contact_timeline WHERE id = ? and client_id = ? ', [req.params.eventId, req.params.id], function (err, result) {
+      if (err) {
+        console.log(err);
+        res.send(err);
+      }else{
+        //console.log('Deleted ' + result.affectedRows + ' rows');
+        con.query('select t.*, u.name as user_name from contact_timeline as t left join users as u on t.client_id = u.id where t.client_id=?',req.params.id ,function(err,timeline){
+          if(err){
+            res.send(err);
+          }
+          console.log(timeline);
+          res.json(timeline);
+        });
+      }
+    });
+            
   });
 
 // on routes that end in /users
