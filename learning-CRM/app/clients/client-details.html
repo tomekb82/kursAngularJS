@@ -241,8 +241,17 @@
                 <span class="date">{{ timelineEvent.contact_date | date : 'dd-MMM' }}</span>
 
                 <div class="content">
+                   <span ng-click="deleteEvent(timelineEvent.id)" class="pull-right edit-btn">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </span>
+                    <span ng-click="editEvent(timelineEvent.id)" class="pull-right edit-btn">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </span>
+                    
+                    <p> <strong>{{timelineEvent.user_name}}</strong> </p>
+                    
                     <p>
-                        <strong>{{timelineEvent.user_name}}</strong> - {{timelineHelper(timelineEvent.contact_type, 'message') }} dnia {{timelineEvent.contact_date | date : 'dd MMMM yyyy o g. H:mm'}}
+                        - {{timelineHelper(timelineEvent.contact_type, 'message') }} dnia {{timelineEvent.contact_date | date : 'dd MMMM yyyy o g. H:mm'}}
                     </p>
 
                     <blockquote>

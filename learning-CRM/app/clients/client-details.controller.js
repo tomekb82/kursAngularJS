@@ -15,6 +15,7 @@
             $scope.timelineHelper = timelineService.getTimelineHelper();
             $scope.eventTypes = timelineService.getEventTypes();
             $scope.showSaveTimelinaFormMsg = false;
+            $scope.addNewEvent = true;
 
             if('new' != $routeParams.clientId){
                 clientsService.getClient(
@@ -82,24 +83,60 @@
 
                 if($scope.timelineForm.$invalid) return;
 
-                timelineService.addTimelineEvent($scope.client.id, $scope.timelineEvent, function (timeline) {
+                if($scope.addNewEvent){
+                    timelineService.addTimelineEvent($scope.client.id, $scope.timelineEvent, function (timeline) {
                         
-                    console.log("addTimelineEvent");    
-                    console.log(timeline);
+                        $scope.timeline = timeline;
+                        $scope.timelineEvent = {};
+
+                        $scope.newEventCreatedMsg = true;
+                        $scope.timelineForm.$setUntouched();
+                        $scope.timelineForm.$submitted = false;
+
+                        $timeout(function () {
+
+                            $scope.newEventCreatedMsg = false;
+
+                        }, 2000);
+
+                    });
+                }else{
+                    // update event
+                    timelineService.updateTimelineEvent($scope.client.id, $scope.timelineEvent, function (timeline) {
+                        
+                        $scope.timeline = timeline;
+                        $scope.timelineEvent = {};
+
+                        $scope.newEventCreatedMsg = true;
+                        $scope.timelineForm.$setUntouched();
+                        $scope.timelineForm.$submitted = false;
+                        $scope.addNewEvent = true;
+
+                        $timeout(function () {
+
+                            $scope.newEventCreatedMsg = false;
+
+                        }, 2000);
+
+                    });
+
+                    
+                }
+            };
+
+            $scope.deleteEvent = function(eventId){
+                timelineService.deleteEvent($scope.client.id, eventId, function(timeline){
                     $scope.timeline = timeline;
-                    $scope.timelineEvent = {};
+                })
+            };
 
-                    $scope.newEventCreatedMsg = true;
-                    $scope.timelineForm.$setUntouched();
-                    $scope.timelineForm.$submitted = false;
-
-                    $timeout(function () {
-
-                        $scope.newEventCreatedMsg = false;
-
-                    }, 2000);
-
-                });
+            $scope.editEvent = function(eventId){
+                $scope.addNewEvent = false;
+                timelineService.getEvent($scope.timeline, eventId, function(event){
+                    console.log(event);
+                    $scope.timelineEvent = event;
+                })
+              
             };
 
         

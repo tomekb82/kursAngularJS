@@ -1028,6 +1028,15 @@ ul.timeline li .content .img-thumbnail {
     }
 }
 
+.edit-btn{
+    cursor: pointer;
+}
+
+.edit-btn .glyphicon{
+    font-size: 10px;
+    top: -1px;
+    margin-left: 2px;
+}
 
 .sort-btn{
     cursor: pointer;
