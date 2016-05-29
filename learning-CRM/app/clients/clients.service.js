@@ -42,11 +42,8 @@
 
             $http.post('http://localhost:8089/api/clients', clientData)
                 .success(function (data) {
-
-                    console.log(data);
                     success(data.insertId);
-
-                });
+            });
 
         };
         var _deleteClient = function (clientId, success) {

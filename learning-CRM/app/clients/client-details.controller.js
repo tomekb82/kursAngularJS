@@ -1,14 +1,19 @@
 (function(){
 
     angular.module('crmApp')
-    .controller('ClientDetailsCtrl', ['$scope', '$routeParams', '$timeout', '$location','clientsService', 'usersService', 'sectorsService', 
-        function($scope, $routeParams, $timeout, $location, clientsService, usersService, sectorsService){
+    .controller('ClientDetailsCtrl', ['$scope', '$routeParams', '$timeout', '$location','clientsService', 'usersService', 'sectorsService', 'timelineService',
+        function($scope, $routeParams, $timeout, $location, clientsService, usersService, sectorsService,timelineService){
             $scope.client = {};//{ "id": 1, "company_name": "Lorem ipsum dolor", "contact_name": "Michalina Kwiatkowska", "contact_phone": "53 790 92 21", "contact_email": "MichalinaKwiatkowska@dayrep.com",             "account_manager_id": 1, "notes": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.", "sector_id": 5 };
             $scope.users = []; //[ { "id": 1, "name": "Konstantyn Kowalski" },             { "id": 2, "name": "Łukasz Pawłowski" }];
             $scope.sectors = [];
 
             $scope.clientNotFound = false;
-            $scope.showSaveClientFormMsg = false;
+            $scope.newEventCreatedMsg = false;
+
+            $scope.timeline = [];
+            $scope.timelineEvent = {};
+            $scope.eventTypes = timelineService.getEventTypes();
+            $scope.showSaveTimelinaFormMsg = false;
 
             if('new' != $routeParams.clientId){
                 clientsService.getClient(
@@ -16,6 +21,12 @@
                     function (data) {
                         $scope.client = data[0];   
                         console.log($scope.client);              
+                        
+                        timelineService.getClientTimeline($scope.client.id, function (timeline) {
+                            $scope.timeline = timeline;
+                            console.log($scope.timeline);
+                        });
+
                     },
                     function (data, status) {
                         if(404 == status){
@@ -64,8 +75,36 @@
                     alert('Klient został poprawnie usunięty');
                     $location.path('/#/clients');
                 });
+            };
 
-        };
+            $scope.addTimelineEvent  = function(){
+
+                if($scope.timelineForm.$invalid) return;
+
+                timelineService.addTimelineEvent($scope.client.id, $scope.timelineEvent, function (timeline) {
+                        
+                    console.log("addTimelineEvent");    
+                    console.log(timeline);
+                    $scope.timeline = timeline;
+                    $scope.timelineEvent = {};
+
+                    $scope.newEventCreatedMsg = true;
+                    $scope.timelineForm.$setUntouched();
+                    $scope.timelineForm.$submitted = false;
+
+                    $timeout(function () {
+
+                        $scope.newEventCreatedMsg = false;
+
+                    }, 2000);
+
+                });
+            };
+
+        
+
+
+
 
 }]);
 

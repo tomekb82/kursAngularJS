@@ -35,13 +35,23 @@
             <table class="no-border table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th class="text-center" style="width: 70px;">ID</th>
-                        <th>Nazwa</th>
+                        <th class="text-center" style="width: 70px;">
+                            <span ng-click="changeOrder('id')" class="sort-btn">
+                                ID
+                                <i ng-show="isOrderedBy('id')" class="glyphicon" ng-class="{'glyphicon-chevron-up': !isOrderedReverse(), 'glyphicon-chevron-down':isOrderedReverse()}"></i>
+                            </span>  
+                        </th>
+                        <th>
+                            <span ng-click="changeOrder('name')" class="sort-btn">
+                                Nazwa
+                                <i ng-show="isOrderedBy('name')" class="glyphicon" ng-class="{'glyphicon-chevron-up': !isOrderedReverse(), 'glyphicon-chevron-down':isOrderedReverse()}"></i>
+                            </span> 
+                        </th>
                     </tr>
                 </thead>
-                <tbody class="no-border" ng-repeat="sector in sectors | filter : filterBy">
+                <tbody class="no-border" ng-repeat="sector in sectors | filter:filterBy | orderBy:orderByColumn:orderByDir">
                     <tr>
-                        <td class="text-center">1</td>
+                        <td class="text-center">{{sector.id}}</td>
                         <td>{{ sector.name}}</td>
                     </tr>
                 </tbody>
