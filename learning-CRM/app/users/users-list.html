@@ -47,6 +47,7 @@
                                 <i ng-show="isOrderedBy('name')" class="glyphicon" ng-class="{'glyphicon-chevron-up': !isOrderedReverse(), 'glyphicon-chevron-down':isOrderedReverse()}"></i>
                             </span> 
                         </th>
+                       
                         </tr>
                     </thead>
                     <tbody class="no-border" ng-repeat="user in users | filter : filterBy | orderBy:orderByColumn:orderByDir">
@@ -60,4 +61,42 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="flat-panel">
+            <div class="flat-panel-header">
+                <h4 class="flat-panel-heading">Projektanci</h4>
+            </div>
+            <div class="flat-panel-body">
+                <div ng-repeat="member in devs">
+                    <business-card member="member" ng-click="showUserDetails(member.id)"></business-card>
+                </div>
+
+                <div class="pull-right">
+                    <business-card member="teamLeader" type="extended" ng-click="showUserDetails(member.id)"></business-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <hr>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="flat-panel">
+            <div class="flat-panel-header">
+                <h4 class="flat-panel-heading">Administratorzy</h4>
+            </div>
+            <div class="flat-panel-body">
+                <div ng-repeat="member in admins">
+                    <div business-card member="member" type="extended" ng-click="showUserDetails(member.id)"></div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
+
+
 <!-- /content -->

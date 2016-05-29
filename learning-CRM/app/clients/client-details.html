@@ -2,7 +2,7 @@
 <!-- content -->
 <div class="row top-menu">
     <div class="col-xs-12 clearfix">
-        <a class="top-menu-link" href="#"><i class="fa fa-angle-double-left"></i> Powrót do listy klientów</a>
+        <a class="top-menu-link" href="/#/clients"><i class="fa fa-angle-double-left"></i> Powrót do listy klientów</a>
 
         <a href="#" ng-hide="clientNotFound || !client.id" ng-click="deleteClient()" class="btn btn-danger pull-right">Usuń tego klienta</a>
     </div>
@@ -17,7 +17,7 @@
     <div class="col-xs-12 col-lg-6">
         <div class="flat-panel">
             <div class="flat-panel-header">
-                <h3 ng-show="!client.id" class="flat-panel-heading">Dane klienta</h3>
+                <h3 ng-show="!client.id" class="flat-panel-heading">Dodaj nowego klienta</h3>
                 <h3 ng-show="client.id" class="flat-panel-heading">Dane klienta</h3>
             </div>
             <div class="flat-panel-body">

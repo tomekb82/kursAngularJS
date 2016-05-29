@@ -25,7 +25,11 @@
                 templateUrl: 'app/users/users-list.html',
                 label: 'Lista użytkowników systemu'
             })
-           
+            .when('/users/:userId', {
+                controller: 'UserDetailsCtrl',
+                templateUrl: 'app/users/user-details.html',
+                label: 'Karta użytkownika'
+            })
             .otherwise({
                 redirectTo: '/clients'
             })

@@ -1038,6 +1038,13 @@ ul.timeline li .content .img-thumbnail {
     margin-left: 2px;
 }
 
+.bc-style{
+    cursor: pointer;
+    float: left;
+    width: 205px;
+    margin: 10px;
+}
+            
 .sort-btn{
     cursor: pointer;
 }

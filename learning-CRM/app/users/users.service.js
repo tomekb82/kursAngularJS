@@ -16,8 +16,21 @@
                 });
 
 		};   
+        var _getUser = function (userId, success, error) {
+
+            success = success||function(){};
+            error = error||function(){};
+
+            $http.get('http://localhost:8089/api/users/' + userId)
+                .success(function (data) {
+                    success(data);
+                })
+                .error(error);
+
+        };
         return {
-        	getUsers: _getUsers
+        	getUsers: _getUsers,
+            getUser: _getUser
         };
     }]);
 
