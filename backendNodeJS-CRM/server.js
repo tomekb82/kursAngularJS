@@ -54,6 +54,7 @@ router.get('/', function(req, res) {
 // on routes that end in /clients/:id/timeline
 // ----------------------------------------------------
 router.route('/clients/:id/timeline')
+  
   // create a timeline (accessed at POST http://localhost:8080/api/clients/:id/timeline
   .post(function(req, res) {
     var timeline = req.body;
@@ -62,14 +63,14 @@ router.route('/clients/:id/timeline')
       con.query('INSERT INTO contact_timeline SET ?', timeline, function(err,result){
         if(err) 
           res.json(err);
-        console.log('Last insert ID:', result.insertId);
-        con.query('select t.*, u.name as user_name from contact_timeline as t left join users as u on t.client_id = u.id where t.client_id=?',req.params.id ,function(err,timeline){
+        con.query('select t.*, u.name as user_name from contact_timeline as t left join users as u on t.user_id = u.id where t.client_id=?',req.params.id ,function(err,timeline){
           if(err)
             res.send(err);
           res.json(timeline);
         });
       });
   })
+
   // get the timeline with that id (accessed at GET http://localhost:8080/api/clients/:id/timeline)
   .get(function(req, res) {
 
@@ -79,9 +80,38 @@ router.route('/clients/:id/timeline')
       res.json(timeline);
     });
   });
+
 // on routes that end in /clients/:id/timeline/:eventId
 // ----------------------------------------------------
 router.route('/clients/:id/timeline/:eventId')  
+
+  // update the timeline with this id (accessed at PUT http://localhost:8080/api/clients/:id/timeline/:eventId)
+  .put(function(req, res) {  
+
+    var event = req.body;
+    console.log(event);
+
+    con.query('UPDATE contact_timeline SET \
+      user_id=?, \
+      contact_date=?, \
+      contact_type=?, \
+      notes=? \
+      Where ID = ?',  
+        [ event.user_id,
+          event.contact_date,
+          event.contact_type,
+          event.notes,
+          req.params.eventId], function (err, result) {
+      if (err) 
+        res.send(err);
+      con.query('select t.*, u.name as user_name from contact_timeline as t left join users as u on t.user_id = u.id where t.client_id=?',req.params.id ,function(err,timeline){
+        if(err)
+          res.send(err);
+        console.log(timeline);
+        res.json(timeline);
+      });
+    });
+  })
 
    // delete the timeline with this id (accessed at DELETE http://localhost:8080/api/clients/:id/timeline)
   .delete(function(req, res) {
@@ -91,7 +121,7 @@ router.route('/clients/:id/timeline/:eventId')
         res.send(err);
       }else{
         //console.log('Deleted ' + result.affectedRows + ' rows');
-        con.query('select t.*, u.name as user_name from contact_timeline as t left join users as u on t.client_id = u.id where t.client_id=?',req.params.id ,function(err,timeline){
+        con.query('select t.*, u.name as user_name from contact_timeline as t left join users as u on t.user_id = u.id where t.client_id=?',req.params.id ,function(err,timeline){
           if(err){
             res.send(err);
           }
@@ -106,6 +136,7 @@ router.route('/clients/:id/timeline/:eventId')
 // on routes that end in /users
 // ----------------------------------------------------
 router.route('/users')
+
   // create a user (accessed at POST http://localhost:8080/api/users
   .post(function(req, res) {
       con.query('INSERT INTO users SET ?', req.body, function(err,result){
@@ -115,6 +146,7 @@ router.route('/users')
         res.json({message: 'User added successfully.'});
       });
   })
+
   // get all the users (accessed at GET http://localhost:8080/api/users)
   .get(function(req, res) {
     con.query('SELECT * FROM users',function(err,users){
@@ -171,6 +203,7 @@ router.route('/clients')
         res.json(result);
       });
   })
+
   // get all the clients (accessed at GET http://localhost:8080/api/clients)
   .get(function(req, res) {
     var sql = "SELECT c.*, cs.name as sector_name, u.name as account_manager_name FROM clients as c \
@@ -199,6 +232,7 @@ router.route('/clients/:id')
       res.json(clients);
     });
   })
+
   // update the client with this id (accessed at PUT http://localhost:8080/api/clients/:id)
   .put(function(req, res) {  
 
@@ -226,9 +260,8 @@ router.route('/clients/:id')
 		  //console.log('Changed ' + result.changedRows + ' rows');
       res.json({ message: 'Client updated!' });
   	});
-    
+  })
 
-        })
   // delete the client with this id (accessed at DELETE http://localhost:8080/api/clients/:id)
   .delete(function(req, res) {
 	  con.query('DELETE FROM clients WHERE id = ?', [req.params.id], function (err, result) {
