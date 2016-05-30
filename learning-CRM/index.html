@@ -53,6 +53,12 @@
                                     <span>Użytkownicy systemu</span>
                                 </a>
                             </li>
+                             <li ng-class="{active: routeChecker.isActive('/contacts')}">
+                                <a href="/#/contacts">
+                                    <i class="fa fa-phone"></i>
+                                    <span>Kontakty</span>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     <div class="sidebar-copyrights">
@@ -105,6 +111,7 @@
         <script src="vendor/angular-messages.min.js"></script>
         <script src="vendor/angular-locale_pl-pl.js"></script>
         <script src="vendor/ng-breadcrumbs.min.js"></script>
+        <script src="vendor/moment.js"></script>
 
         <!-- configuration: routing-->
         <script src="app/main.js"></script>
@@ -122,6 +129,7 @@
         <script src="app/clients/clients-list.controller.js"></script>
         <script src="app/clients/client-details.controller.js"></script>
         <script src="app/sectors/sectors-list.controller.js"></script>
+        <script src="app/contacts/contacts-list.controller.js"></script>
         <script src="app/users/users-list.controller.js"></script>
         <script src="app/users/user-details.controller.js"></script>
 

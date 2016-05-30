@@ -95,9 +95,12 @@
                         <label for="account-manager" class="col-lg-2 col-sm-2 col-xs-12 control-label required">Opiekun klienta</label>
 
                         <div class="col-lg-10 col-sm-10 col-xs-12">
-                               
-                              <select ng-model="client.account_manager_id" id="account-manager" name="accountManager" class="form-control" required> 
-                                <option ng-repeat="user in users" value="{{ user.id }}">{{ user.name }}</option>
+                             
+                            <select id="account-manager" name="accountManager" 
+                                ng-model="client.account_manager_id" 
+                                ng-options="user.id as user.name for user in users"
+                                class="form-control" required>
+                                <option value=""></option>
                             </select>
                         
                             <i class="glyphicon glyphicon-asterisk"></i>
@@ -111,8 +114,11 @@
                         <label for="company-sector" class="col-lg-2 col-sm-2 col-xs-12 control-label required">Branża</label>
 
                         <div class="col-lg-10 col-sm-10 col-xs-12">
-                            <select ng-model="client.sector_id" id="company-sector" name="companySector" class="form-control" required>
-                                <option ng-repeat="sector in sectors" value="{{ sector.id }}">{{ sector.name }}</option>
+                            <select id="company-sector" name="companySector" 
+                                ng-model="client.sector_id" 
+                                ng-options="sector.id as sector.name for sector in sectors"
+                                class="form-control" required>
+                                <option value=""></option>
                             </select>
 
                             <i class="glyphicon glyphicon-asterisk"></i>
@@ -147,13 +153,17 @@
     <div class="col-xs-12 col-lg-6" ng-show="client.id">
         <div class="flat-panel">
             <div class="flat-panel-header">
-                <h3 class="flat-panel-heading">Dodaj nowe wydarzenie na osi czasu</h3>
+                <h3 ng-show="addNewEvent" class="flat-panel-heading">Dodaj nowe wydarzenie na osi czasu</h3>
+                <h3 ng-show="!addNewEvent" class="flat-panel-heading">Zmodyfikuj wydarzenie na osi czasu</h3>
             </div>
             <div class="flat-panel-body">
 
                 <form name="timelineForm" class="form-horizontal" ng-submit="addTimelineEvent()" novalidate>
-                    <div ng-show="newEventCreatedMsg"  class="alert alert-success">
+                    <div ng-show="addNewEvent && newEventCreatedMsg"  class="alert alert-success">
                         <strong>Sukces!</strong> Nowe wydarzenie zostało dodane do osi czasu!
+                    </div>
+                    <div ng-show="!addNewEvent && newEventCreatedMsg"  class="alert alert-success">
+                        <strong>Sukces!</strong> Wydarzenie zostało zmodyfikowane na osi czasu!
                     </div>
 
                     <div ng-show="timelineForm.$submitted && timelineForm.$invalid" class="alert alert-warning">
@@ -164,9 +174,11 @@
                         <label for="contact-user" class="col-lg-2 col-sm-2 col-xs-12 control-label">Kto się kontaktował</label>
 
                         <div class="col-lg-10 col-sm-10 col-xs-12">
-                            <select id="contact-user" name="contactUser" ng-model="timelineEvent.user_id" class="form-control" required>
+                            <select id="contact-user" name="contactUser" 
+                                ng-model="timelineEvent.user_id" 
+                                ng-options="user.id as user.name for user in users"
+                                class="form-control" required>
                                 <option value=""></option>
-                                <option ng-repeat="user in users" value="{{ user.id }}">{{ user.name }}</option>
                             </select>
 
                             <i class="glyphicon glyphicon-asterisk"></i>
@@ -224,7 +236,8 @@
 
                     <div class="form-group">
                         <div class="col-lg-10 col-sm-10 col-xs-12 col-lg-offset-2 col-sm-offset-2">
-                            <button class="btn btn-primary">Dodaj wydarzenie</button>
+                            <button ng-show="addNewEvent" class="btn btn-primary">Dodaj wydarzenie</button>
+                            <button ng-show="!addNewEvent" class="btn btn-primary">Zmodyfikuj wydarzenie</button>
                         </div>
                     </div>
                 </form>
@@ -235,27 +248,28 @@
 
         <p ng-show="timeline.length == 0" class="emtpy-timeline">Jeszcze nikt nie kontaktował się z tym klientem</p>
 
-        <ul ng-show="timeline.length > 0" class="timeline">
-            <li ng-repeat="timelineEvent in timeline">
-                <i class="fa fa-{{ timelineEvent.contact_type }} {{ timelineHelper(timelineEvent.contact_type, 'color') }}"></i>
-                <span class="date">{{ timelineEvent.contact_date | date : 'dd-MMM' }}</span>
+        <ul ng-show="timeline.length > 0 && addNewEvent" class="timeline">
+      
+            <li ng-repeat="event in timeline">
+                <i class="fa fa-{{ event.contact_type }} {{ timelineHelper(event.contact_type, 'color') }}"></i>
+                <span class="date">{{ event.contact_date | date : 'dd-MMM' }}</span>
 
                 <div class="content">
-                   <span ng-click="deleteEvent(timelineEvent.id)" class="pull-right edit-btn">
+                   <span ng-click="deleteEvent(event.id)" class="pull-right edit-btn">
                         <i class="glyphicon glyphicon-trash"></i>
                     </span>
-                    <span ng-click="editEvent(timelineEvent.id)" class="pull-right edit-btn">
+                    <span ng-click="editEvent(event.id)" class="pull-right edit-btn">
                         <i class="glyphicon glyphicon-pencil"></i>
                     </span>
                     
-                    <p> <strong>{{timelineEvent.user_name}}</strong> </p>
+                    <p> <strong>{{event.user_name}}</strong> </p>
                     
                     <p>
-                        - {{timelineHelper(timelineEvent.contact_type, 'message') }} dnia {{timelineEvent.contact_date | date : 'dd MMMM yyyy o g. H:mm'}}
+                        - {{timelineHelper(event.contact_type, 'message') }} dnia {{event.contact_date | date : 'dd MMMM yyyy o g. H:mm'}}
                     </p>
 
                     <blockquote>
-                        <p>{{timelineEvent.notes}}</p>
+                        <p>{{event.notes}}</p>
                     </blockquote>
                 </div>
             </li>

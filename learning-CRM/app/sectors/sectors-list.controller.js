@@ -4,14 +4,15 @@
     .controller('SectorsListCtrl', ['$scope', 'sectorsService', 
     	function($scope, sectorsService){
         
-            $scope.sectors = [];
+            $scope.items = [];
+            $scope.listHeading = 'Lista branż';
             
             $scope.filterBy = {};
             $scope.orderByColumn = 'id';
             $scope.orderByDir = false;
 
             sectorsService.getSectors(function(sectors){
-            	$scope.sectors = sectors;
+            	$scope.items = sectors;
             });
 
             $scope.changeOrder = function(columnName){

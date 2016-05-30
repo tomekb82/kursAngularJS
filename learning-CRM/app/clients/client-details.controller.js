@@ -80,6 +80,8 @@
 
                 if($scope.timelineForm.$invalid) return;
 
+                console.log($scope.timelineEvent);
+
                 if($scope.addNewEvent){
                     timelineService.addTimelineEvent($scope.client.id, $scope.timelineEvent, function (timeline) {
                         
@@ -99,7 +101,7 @@
                     });
                 }else{
                     // update event
-                    timelineService.updateTimelineEvent($scope.client.id, $scope.timelineEvent, function (timeline) {
+                    timelineService.updateTimelineEvent($scope.client.id, $scope.timelineEvent.id, $scope.timelineEvent, function (timeline) {
                         
                         $scope.timeline = timeline;
                         $scope.timelineEvent = {};
@@ -107,12 +109,11 @@
                         $scope.newEventCreatedMsg = true;
                         $scope.timelineForm.$setUntouched();
                         $scope.timelineForm.$submitted = false;
-                        $scope.addNewEvent = true;
 
                         $timeout(function () {
 
                             $scope.newEventCreatedMsg = false;
-
+                            $scope.addNewEvent = true;
                         }, 2000);
 
                     });
@@ -122,6 +123,9 @@
             };
 
             $scope.deleteEvent = function(eventId){
+
+                if(!confirm('Czy na pewno chcesz usunąć to wydarzenie?')) return;
+
                 timelineService.deleteEvent($scope.client.id, eventId, function(timeline){
                     $scope.timeline = timeline;
                 })
@@ -130,7 +134,8 @@
             $scope.editEvent = function(eventId){
                 $scope.addNewEvent = false;
                 timelineService.getEvent($scope.timeline, eventId, function(event){
-                    $scope.timelineEvent = event;
+                   $scope.timelineEvent = event;
+                   $scope.timelineEvent.contact_date = moment($scope.timelineEvent.contact_date).format('YYYY-MM-DD hh:mm:ss');
                 })
               
             };

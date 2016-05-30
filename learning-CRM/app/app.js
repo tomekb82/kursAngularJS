@@ -15,11 +15,6 @@
                 templateUrl: 'app/clients/client-details.html',
                 label: 'Karta klienta'
             })
-            .when('/sectors', {
-                controller: 'SectorsListCtrl',
-                templateUrl: 'app/sectors/sectors-list.html',
-                label: 'Lista branż'
-            })
             .when('/users', {
                 controller: 'UsersListCtrl',
                 templateUrl: 'app/users/users-list.html',
@@ -29,6 +24,16 @@
                 controller: 'UserDetailsCtrl',
                 templateUrl: 'app/users/user-details.html',
                 label: 'Karta użytkownika'
+            })
+            .when('/sectors', {
+                controller: 'SectorsListCtrl',
+                templateUrl: 'app/views/simple-list.html',
+                label: 'Lista branż'
+            })
+            .when('/contacts', {
+                controller: 'ContactsCtrl',
+                templateUrl: 'app/views/simple-list.html',
+                label: 'Lista pracowników'
             })
             .otherwise({
                 redirectTo: '/clients'

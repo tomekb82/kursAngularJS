@@ -1033,9 +1033,10 @@ ul.timeline li .content .img-thumbnail {
 }
 
 .edit-btn .glyphicon{
-    font-size: 10px;
+    font-size: 11px;
     top: -1px;
     margin-left: 2px;
+    margin: 5px;
 }
 
 .bc-style{

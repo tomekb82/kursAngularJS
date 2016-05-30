@@ -54,6 +54,19 @@
             });
 
         };
+
+        var _updateTimelineEvent = function(clientId, eventId, eventData, success){
+
+            success = success||function(){};
+
+            $http.put('http://localhost:8089/api/clients/'+clientId+'/timeline/' + eventId, eventData)
+                .success(function (data) {
+                    console.log("updateTimelineEvent:");
+                    console.log(data);
+                    success(data);
+            });
+
+        };
         var __parseTimeline = function (timeline) {
 
             angular.forEach(timeline, function (element, index) {
@@ -69,7 +82,7 @@
             angular.forEach(timeline, function (element, index) {
                 if(idx == element.id){;
                     element['contact_date'] = new Date(element['contact_date']);
-                    callback(element);
+                    callback(angular.copy(element));
                 }
             });
         };
@@ -101,6 +114,7 @@
                 return _timelineHelper;
             },
             addTimelineEvent: _addTimelineEvent,
+            updateTimelineEvent: _updateTimelineEvent,
             getClientTimeline: _getClientTimeline,
             deleteEvent: _deleteEvent,
             getEvent: _getEvent

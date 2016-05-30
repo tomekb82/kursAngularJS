@@ -5,7 +5,7 @@
 <div class="flat-panel">
 
     <div class="flat-panel-header">
-        <h4 class="flat-panel-heading">Wyszkiwanie i filtracja</h4>
+        <h4 class="flat-panel-heading">Wyszukiwanie i filtracja</h4>
     </div>
     <div class="flat-panel-body">
         <div class="form-horizontal">
@@ -97,7 +97,7 @@
             <tbody class="no-border">
                  <tr ng-repeat="(id, client) in clients | filter:filterBy | orderBy: orderByColumn : orderByDir">
                     <td class="text-center">{{client.id}}</td>
-                    <td>{{client.company_name}}</td>
+                    <td>{{client.company_name | uppercase}}</td>
                     <td class="hidden-xs">{{client.sector_name}}</td>
                     <td class="hidden-xs">{{client.account_manager_name}}</td>
                     <td class="text-center"><a href="/#/clients/{{ client.id }}" class="label label-primary">Szczegóły</a></td>
