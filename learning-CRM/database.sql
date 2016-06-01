@@ -114,7 +114,8 @@ INSERT INTO `contact_timeline` (`id`, `client_id`, `user_id`, `contact_date`, `c
 
 CREATE TABLE IF NOT EXISTS `users` (
 `id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8_polish_ci NOT NULL
+  `name` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `position` varchar(40) COLLATE utf8_polish_ci NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci AUTO_INCREMENT=6 ;
 
 --
@@ -122,11 +123,13 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `name`) VALUES
-(1, 'Konstantyn Kowalski'),
-(2, 'Łukasz Pawłowski'),
-(3, 'Zofia Jabłońska'),
-(4, 'Izydor Pawłowski'),
-(5, 'Sylwester Kozłowski');
+(1, 'Konstantyn Kowalski', 'developer'),
+(2, 'Łukasz Pawłowski', 'admin'),
+(3, 'Zofia Jabłońska', 'developer'),
+(4, 'Izydor Pawłowski', 'leader'),
+(5, 'Sylwester Kozłowski', 'developer'),
+(6, 'Tomek Belina', 'developer'),
+(7, 'Adam Nowak', 'admin');
 
 --
 -- Indeksy dla zrzutów tabel
