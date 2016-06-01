@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Zrzut danych tabeli `users`
 --
 
-INSERT INTO `users` (`id`, `name`) VALUES
+INSERT INTO `users` (`id`, `name`, `position`) VALUES
 (1, 'Konstantyn Kowalski', 'developer'),
 (2, 'Łukasz Pawłowski', 'admin'),
 (3, 'Zofia Jabłońska', 'developer'),
