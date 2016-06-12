@@ -61,6 +61,15 @@ Available actions
 
 
 
+## instalacja wtyczki do TypeScript
+
+- przejsc do katalogu pakietow (np.cd /home/tomek/.config/sublime-text-3)
+- zaistaluj wtyczkę TS
+    git clone --depth 1 https://github.com/Microsoft/TypeScript-Sublime-Plugin.git TypeScript
+
+- zrestartuj sublime-text 
+
+
 ## Instalacja wtyczki dla angularjs:
 
     Download and install Sublime Text Editor from http://www.sublimetext.com/.
